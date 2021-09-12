@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { SendSuccessResponse } from '../app/helpers/response.helpers';
 import { successCodes } from '../app/helpers/statusCodes.helpers';
 import { successMessages } from '../app/helpers/message.helpers';
-
+import routes from '../config/routes';
 
 const app = express();
 const {ok} = successCodes;
@@ -12,6 +12,7 @@ const {welcome} = successMessages;
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
+app.use('/api', routes);
 app.get('/', (req,res)=>{
     SendSuccessResponse(res,ok,welcome,null, null)
 })

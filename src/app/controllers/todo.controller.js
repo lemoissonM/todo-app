@@ -13,7 +13,7 @@ export default {
     register: async (req, res)=>{
         const {nom, dateTodo, complited, datastatus, userId} = req.body;
         try {
-            const todoCreated = await db.todos.create({
+            const todoCreated = await db.Todo.create({
                 nom,
                 dateTodo,
                 complited: process.env.AP_UNACTIVE,
@@ -24,6 +24,7 @@ export default {
                 SendSuccessResponse(res,created,todoCreate,null,todoCreated)
             }else sendErrorResponse(res, badRequest, todoCreateFail)
         } catch (error) {
+            console.log(error)
             sendErrorResponse(res, internalServerError, interError)
         }
     },
