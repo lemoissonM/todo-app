@@ -7,7 +7,7 @@ export const successMessages = {
     updateSuccess : "Enregistrements mis à jour avec succès!",
     deleteRecordSuccess: "Enregistrement supprimé avec succès!",
     completeTodo : "la tâche a été completée avec success ! ",
-    welcome : "Welcome to Immob Company API",
+    welcome : "Welcome to todo_app API",
 }
 
 export const errorMessages ={
