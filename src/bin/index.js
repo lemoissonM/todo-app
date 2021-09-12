@@ -1,10 +1,16 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { SendSuccessResponse } from '../app/helpers/response.helpers';
+import { successCodes } from '../app/helpers/statusCodes.helpers';
+import { successMessages } from '../app/helpers/message.helpers';
+
 
 const app = express();
+const {ok} = successCodes;
+const {welcome} = successMessages
 
 app.get('/', (req,res)=>{
-
+    SendSuccessResponse(res,ok,welcome,null, null)
 })
 
 app.use('*',(req,res)=>{
