@@ -7,7 +7,10 @@ import { successMessages } from '../app/helpers/message.helpers';
 
 const app = express();
 const {ok} = successCodes;
-const {welcome} = successMessages
+const {welcome} = successMessages;
+
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 app.get('/', (req,res)=>{
     SendSuccessResponse(res,ok,welcome,null, null)
