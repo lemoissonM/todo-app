@@ -96,5 +96,22 @@ export default {
         } catch (error) {
             sendErrorResponse(res, internalServerError, interError)
         }
+    },
+    search: async (req, res)=>{
+        const {query} = req.body;
+        try {
+            const isSearch = await db.Todo.findAndCountAll({
+                where: {
+                    [Op.or]: [
+                        {nom: {[Op.subString]: query}},
+                        {dateTodo: {[Op.subString]: query}}
+                    ]
+                }
+            })
+            if(isSearch) SendSuccessResponse(res, ok, recordFound, null, isSearch);
+            else sendErrorResponse(res, notFound, noRecordFound);
+        } catch (error) {
+            SendSuccessResponse(res, internalServerError, interError);
+        }
     }
 }
