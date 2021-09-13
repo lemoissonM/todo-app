@@ -58,8 +58,19 @@ export default {
             sendErrorResponse(res, internalServerError, interError);
         }
     },
-    viewCompleted: async (req, res)=>{
-        
+    viewCompletedTodo: async (req, res)=>{
+      try {
+        const isCompleted = await db.Todo.findAll({
+            where: {
+                datastatus: process.env.AP_ACTIVE,
+                complited: process.env.AP_ACTIVE
+            }
+        })
+        if(isCompleted) SendSuccessResponse(res, ok, recordFound, null, isCompleted);
+        else sendErrorResponse(res, notFound, noRecordFound)
+      } catch (error) {
+        sendErrorResponse(res, internalServerError, interError)
+      }
     },
     viewById: async (req, res)=>{
 

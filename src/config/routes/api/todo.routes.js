@@ -7,4 +7,5 @@ route
     .post('/create', ctrl.register)
     .get('/view-all', ctrl.viewAll)
     .put('/update/:id', ctrl.update)
+    .get('/view-completed', ctrl.viewCompletedTodo)
 export default route;
