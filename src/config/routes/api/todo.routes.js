@@ -10,4 +10,5 @@ route
     .get('/view-completed', ctrl.viewCompletedTodo)
     .get('/view-by-id/:id', ctrl.viewById)
     .delete('/delete-todo/:id', ctrl.delete)
+    .post('/search', ctrl.search)
 export default route;
