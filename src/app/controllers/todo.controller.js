@@ -59,7 +59,7 @@ export default {
         }
     },
     viewCompleted: async (req, res)=>{
-
+        
     },
     viewById: async (req, res)=>{
 
