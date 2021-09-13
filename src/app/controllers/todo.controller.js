@@ -4,10 +4,10 @@ import { sendErrorResponse, SendSuccessResponse } from '../helpers/response.help
 import { failureCodes, successCodes } from '../helpers/statusCodes.helpers';
 import { errorMessages, successMessages } from '../helpers/message.helpers';
 dotenv.config();
-const {created} = successCodes;
-const {todoCreate} = successMessages;
-const {badRequest, internalServerError} = failureCodes;
-const {todoCreateFail, interError} = errorMessages;
+const {created, ok} = successCodes;
+const {todoCreate,recordFound} = successMessages;
+const {badRequest, internalServerError, notFound} = failureCodes;
+const {todoCreateFail, interError, noRecordFound} = errorMessages;
 
 export default {
     register: async (req, res)=>{
@@ -29,7 +29,15 @@ export default {
         }
     },
     viewAll: async (req, res)=>{
-
+        try {
+            const isDone = await db.Todo.findAll({
+                where: {datastatus: process.env.AP_ACTIVE}
+            })
+            if(isDone) SendSuccessResponse(res, ok, recordFound, null, isDone);
+            else sendErrorResponse(res,notFound,noRecordFound);
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError);
+        }
     },
     update: async (req, res)=>{
 
