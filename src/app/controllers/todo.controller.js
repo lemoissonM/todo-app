@@ -5,9 +5,9 @@ import { failureCodes, successCodes } from '../helpers/statusCodes.helpers';
 import { errorMessages, successMessages } from '../helpers/message.helpers';
 dotenv.config();
 const {created, ok} = successCodes;
-const {todoCreate,recordFound} = successMessages;
+const {todoCreate,recordFound, updateSuccess} = successMessages;
 const {badRequest, internalServerError, notFound} = failureCodes;
-const {todoCreateFail, interError, noRecordFound} = errorMessages;
+const {todoCreateFail, interError, noRecordFound, updateFail} = errorMessages;
 
 export default {
     register: async (req, res)=>{
@@ -40,7 +40,23 @@ export default {
         }
     },
     update: async (req, res)=>{
-
+        const {nom, dateTodo, complited, datastatus, userId} = req.body;
+        const id = req.params.id;
+        try {
+            const todo = await db.Todo.findOne({
+                where:{id:id}
+            })
+            const isUpdated = await todo.update({
+                nom: nom || todo.nom,
+                dateTodo: dateTodo || todo.dateTodo,
+                complited: complited || todo.complited,
+                datastatus: datastatus || todo.datastatus
+            })
+            if(isUpdated) SendSuccessResponse(res, ok, updateSuccess, null, isUpdated);
+            else sendErrorResponse(res, badRequest, updateFail)
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError);
+        }
     },
     viewCompleted: async (req, res)=>{
 
