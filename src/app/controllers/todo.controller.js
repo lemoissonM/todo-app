@@ -1,5 +1,6 @@
 import db from '../models';
 import dotenv from 'dotenv';
+import {Op} from 'sequelize';
 import { sendErrorResponse, SendSuccessResponse } from '../helpers/response.helpers';
 import { failureCodes, successCodes } from '../helpers/statusCodes.helpers';
 import { errorMessages, successMessages } from '../helpers/message.helpers';
@@ -98,19 +99,20 @@ export default {
         }
     },
     search: async (req, res)=>{
-        const {query} = req.body;
+        const { query } = req.body;
         try {
             const isSearch = await db.Todo.findAndCountAll({
                 where: {
                     [Op.or]: [
-                        {nom: {[Op.subString]: query}},
-                        {dateTodo: {[Op.subString]: query}}
+                        {nom: {[Op.substring]: query}},
+                        {dateTodo: {[Op.substring]: query}}
                     ]
                 }
             })
             if(isSearch) SendSuccessResponse(res, ok, recordFound, null, isSearch);
             else sendErrorResponse(res, notFound, noRecordFound);
         } catch (error) {
+            console.log(error)
             SendSuccessResponse(res, internalServerError, interError);
         }
     }
