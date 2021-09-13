@@ -5,9 +5,9 @@ import { failureCodes, successCodes } from '../helpers/statusCodes.helpers';
 import { errorMessages, successMessages } from '../helpers/message.helpers';
 dotenv.config();
 const {created, ok} = successCodes;
-const {todoCreate,recordFound, updateSuccess} = successMessages;
+const {todoCreate,recordFound, updateSuccess, deleteRecordSuccess} = successMessages;
 const {badRequest, internalServerError, notFound} = failureCodes;
-const {todoCreateFail, interError, noRecordFound, updateFail} = errorMessages;
+const {todoCreateFail, interError, noRecordFound, updateFail, deleteRecordFail} = errorMessages;
 
 export default {
     register: async (req, res)=>{
@@ -73,9 +73,28 @@ export default {
       }
     },
     viewById: async (req, res)=>{
-
+        try {
+            const id = req.params.id;
+            const isDone = await db.Todo.findOne({
+                where: {id:id}
+            })
+            if(isDone) SendSuccessResponse(res, ok, recordFound, null, isDone);
+            else sendErrorResponse(res, notFound, noRecordFound);
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError);
+        }
     },
     delete: async (req, res)=>{
+        try {
+            const id =req.params.id;
+            const isDeleted = await db.Todo.destroy({
+                where : {id:id}
+            })
+            if(isDeleted) SendSuccessResponse(res, ok, deleteRecordSuccess, null, isDeleted);
+            else sendErrorResponse(res, badRequest, deleteRecordFail)
 
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError)
+        }
     }
 }
