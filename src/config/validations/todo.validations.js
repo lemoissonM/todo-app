@@ -31,11 +31,13 @@ const todoValidations ={
     update: async (req, res, next)=>{
         const schema = joi.object({
             nom: joi.string().min(3).max(100).required(),
-            dataTodo: joi.string().min(8).max(10).required()
+            dateTodo: joi.string().min(8).max(10).required(),
+            complited: joi.number().required()
         });
-        const err = schema.validate(req.body);
-        if(err){
+        const {error} = schema.validate(req.body);
+        if(error){
             return sendErrorResponse(res, badRequest, fieldValidation)
+            // return SendSuccessResponse(res, badRequest, `${error.details[0].message}`)
         }else {
             return next();
         }
