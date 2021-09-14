@@ -9,7 +9,8 @@ const todoValidations ={
     register: async (req, res, next)=>{
         const schema = joi.object({
             nom: joi.string().min(3).max(100).required(),
-            dateTodo: joi.string().min(8).max(10).required()
+            dateTodo: joi.string().min(8).max(10).required(),
+            userId: joi.number().required()
         });
         const {error} = schema.validate(req.body);
         if(error){

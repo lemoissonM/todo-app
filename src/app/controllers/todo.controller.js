@@ -19,8 +19,8 @@ export default {
                 nom,
                 dateTodo,
                 complited: process.env.AP_UNACTIVE,
+                userId,
                 datastatus: process.env.AP_ACTIVE,
-                userId
             })
             if(todoCreated){
                 SendSuccessResponse(res,created,todoCreate,null,todoCreated)
