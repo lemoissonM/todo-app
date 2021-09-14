@@ -1,10 +1,11 @@
 import express from 'express';
 import ctrl from '../../../app/controllers/todo.controller';
+import validation from '../../../config/validations/todo.validations';
 
 const route = express.Router();
 
 route 
-    .post('/create', ctrl.register)
+    .post('/create', validation.register, ctrl.register)
     .get('/view-all', ctrl.viewAll)
     .put('/update/:id', ctrl.update)
     .get('/view-completed', ctrl.viewCompletedTodo)
