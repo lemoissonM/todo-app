@@ -13,6 +13,7 @@ const {todoCreateFail, interError, noRecordFound, updateFail, deleteRecordFail} 
 export default {
     register: async (req, res)=>{
         const {nom, dateTodo, complited, datastatus, userId} = req.body;
+        console.log(req.body);
         try {
             const todoCreated = await db.Todo.create({
                 nom,
@@ -74,6 +75,7 @@ export default {
       }
     },
     viewById: async (req, res)=>{
+    
         try {
             const id = req.params.id;
             const isDone = await db.Todo.findOne({
