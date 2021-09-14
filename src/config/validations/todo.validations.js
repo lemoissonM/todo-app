@@ -4,7 +4,7 @@ import {failureCodes} from '../../app/helpers/statusCodes.helpers';
 import { sendErrorResponse, SendSuccessResponse } from '../../app/helpers/response.helpers';
 import db from '../../app/models';
 const {badRequest, conflict} =  failureCodes;
-const {duplicatedTodo} = errorMessages;
+const {duplicatedTodo,fieldValidation} = errorMessages;
 const todoValidations ={
     register: async (req, res, next)=>{
         const schema = joi.object({
@@ -25,6 +25,18 @@ const todoValidations ={
         if(checkTodo){
             return sendErrorResponse(res, conflict, duplicatedTodo)
         }else{
+            return next();
+        }
+    },
+    update: async (req, res, next)=>{
+        const schema = joi.object({
+            nom: joi.string().min(3).max(100).required(),
+            dataTodo: joi.string().min(8).max(10).required()
+        });
+        const err = schema.validate(req.body);
+        if(err){
+            return sendErrorResponse(res, badRequest, fieldValidation)
+        }else {
             return next();
         }
     }
