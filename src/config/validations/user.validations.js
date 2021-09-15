@@ -53,3 +53,5 @@ const userValidations ={
         }
     }
 }
+
+export default userValidations;
