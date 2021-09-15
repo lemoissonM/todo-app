@@ -51,7 +51,8 @@ const userValidations ={
         }else{
             return next();
         }
-    }
+    },
+
 }
 
 export default userValidations;
