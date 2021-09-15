@@ -80,7 +80,7 @@ export default {
     },
     view: async(req, res)=>{
         try {
-            const viewAll = findAll({
+            const viewAll = await db.User.findAll({
                 where:{datastatus:process.env.AP_ACTIVE},
                 include: ['TODO']
             })
@@ -90,6 +90,7 @@ export default {
                 sendErrorResponse(res, notFound, noRecordFound)
             }
         } catch (error) {
+            console.log(error)
             sendErrorResponse(res, internalServerError, interError)
         }
     },

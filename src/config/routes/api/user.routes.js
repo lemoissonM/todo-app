@@ -6,5 +6,6 @@ const route = express.Router()
 route
     .post('/register', ctrl.register)
     .post('/login', ctrl.login)
+    .get('/all', ctrl.view)
 
 export default route;
