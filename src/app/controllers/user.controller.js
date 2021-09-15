@@ -12,9 +12,9 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 const {created, ok} = successCodes;
-const {badRequest, internalServerError, unAuthorized, forbidden} = failureCodes;
-const {accountCreate, loginSuccess} = successMessages;
-const {accountFailedToCreate, interError,loginFail, fieldValidation} = errorMessages;
+const {badRequest, internalServerError, unAuthorized, forbidden, notFound} = failureCodes;
+const {accountCreate, loginSuccess, recordFound} = successMessages;
+const {accountFailedToCreate, interError,loginFail, fieldValidation, noRecordFound} = errorMessages;
 
 export default {
     register: async(req, res)=>{
@@ -79,7 +79,18 @@ export default {
         }
     },
     view: async(req, res)=>{
-
+        try {
+            const viewAll = findAll({
+                where:{datastatus:process.env.AP_ACTIVE}
+            })
+            if(viewAll){
+                SendSuccessResponse(res, ok, recordFound, null, viewAll)
+            }else{
+                sendErrorResponse(res, notFound, noRecordFound)
+            }
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError)
+        }
     },
     update: async(req, res)=>{
 
