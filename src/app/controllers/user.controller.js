@@ -12,9 +12,9 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 const {created, ok} = successCodes;
-const {badRequest, internalServerError, unAuthorized} = failureCodes;
+const {badRequest, internalServerError, unAuthorized, forbidden} = failureCodes;
 const {accountCreate, loginSuccess} = successMessages;
-const {accountFailedToCreate, interError,loginFail} = errorMessages;
+const {accountFailedToCreate, interError,loginFail, fieldValidation} = errorMessages;
 
 export default {
     register: async(req, res)=>{
@@ -33,6 +33,7 @@ export default {
                 datastatus: process.env.AP_ACTIVE
             });
             if(isCreated){
+                console.log(randPass)
                 isCreated.password = randPass;
                 SendSuccessResponse(res, created, accountCreate, generateToken(JSON.stringify(isCreated.id)), isCreated);
             } 
@@ -42,20 +43,37 @@ export default {
         }
     },
     login: async(req, res)=>{
-        const {password, email} = req.body;
+        const {password, email, phone} = req.body;
         try {
-            const isSignIn = db.User.findOne({
-                where: {
-                    email: email,
-                    datastatus: process.env.AP_ACTIVE
+            if(email || phone && password){            
+                if(email){
+                    const isSignIn = await db.User.findOne({
+                        where: {
+                            email:email,
+                            datastatus: process.env.AP_ACTIVE
+                        }
+                    })
+                    if(isSignIn){
+                        bcrypt.compare(password, isSignIn.password, (err, result)=>{
+                            if(result) SendSuccessResponse(res, ok, loginSuccess, generateToken(JSON.stringify(isSignIn.id)),isSignIn);
+                            else SendSuccessResponse(res, unAuthorized, loginFail, null, {email: req.body.email, password:req.body.password+'++++++++++++++'});
+                        })
+                    }
+                }else if(phone){
+                    const isSignIn = await db.User.findOne({
+                        where: {
+                            phone:phone,
+                            datastatus: process.env.AP_ACTIVE
+                        }
+                    })
+                    if(isSignIn){
+                        bcrypt.compare(password, isSignIn.password, (err, result)=>{
+                            if(result) SendSuccessResponse(res, ok, loginSuccess, generateToken(JSON.stringify(isSignIn.id)),isSignIn);
+                            else SendSuccessResponse(res, unAuthorized, loginFail, null, {email: req.body.email, password:req.body.password});
+                        })
+                    }else SendSuccessResponse(res, forbidden, loginFail, null,{email: req.body.email, password:req.body.password})
                 }
-            })
-            if(isSignIn){
-                bcrypt.compare(req.body.password, isSignIn.password, (err, result)=>{
-                    if(result) SendSuccessResponse(res, ok, loginSuccess, generateToken(JSON.stringify(isSignIn.id)),isSignIn);
-                    else SendSuccessResponse(res, unAuthorized, loginFail, null, {email: req.body.email, password: req.body.password});
-                })
-            }else SendSuccessResponse(res, unAuthorized, loginFail, null,{email: req.body.email, password: req.body.password})
+            } else sendErrorResponse(res,forbidden, fieldValidation)
         } catch (error) {
             sendErrorResponse(res, internalServerError, interError);
         }

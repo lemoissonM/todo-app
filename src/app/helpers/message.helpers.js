@@ -12,7 +12,7 @@ export const successMessages = {
 
 export const errorMessages ={
     accountFailedToCreate: 'Désolé !\nLe compte n\'a pas été créé, une erreur s\'est produite. Veuillez réessayer !',
-    loginFail: 'Désolé !\nVous avez fourni un mauvais numero ou un mot de passe erroné, veuillez réessayer !',
+    loginFail: 'Désolé !\nVous avez fourni un mauvais email || phone ou un mot de passe erroné, veuillez réessayer !',
     noRecordFound: 'Aucune données enregistrement n\'a été trouvé !',
     deleteRecordFail: 'Échec de la suppression de l\'enregistrement, réessayez !',
     todoCreateFail: 'Échec de la création de la tâche, réessayez !',
