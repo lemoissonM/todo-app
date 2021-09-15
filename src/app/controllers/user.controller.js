@@ -114,7 +114,16 @@ export default {
         }
     },
     viewById: async(req, res)=>{
-
+        const id = req.params.id;
+        try {
+            const isDone = await db.User.findOne({
+                where: {id: id}
+            })
+            if(isDone) SendSuccessResponse(res, ok, recordFound, null, isDone);
+            else sendErrorResponse(res, notFound, noRecordFound);
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError);
+        }
     }
 
 }
