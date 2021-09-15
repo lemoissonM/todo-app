@@ -56,7 +56,7 @@ export default {
                     if(isSignIn){
                         bcrypt.compare(password, isSignIn.password, (err, result)=>{
                             if(result) SendSuccessResponse(res, ok, loginSuccess, generateToken(JSON.stringify(isSignIn.id)),isSignIn);
-                            else SendSuccessResponse(res, unAuthorized, loginFail, null, {email: req.body.email, password:req.body.password+'++++++++++++++'});
+                            else SendSuccessResponse(res, unAuthorized, loginFail, null, {email: req.body.email, password:req.body.password});
                         })
                     }
                 }else if(phone){
