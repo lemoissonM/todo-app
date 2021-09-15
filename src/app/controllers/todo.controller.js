@@ -33,7 +33,8 @@ export default {
     viewAll: async (req, res)=>{
         try {
             const isDone = await db.Todo.findAll({
-                where: {datastatus: process.env.AP_ACTIVE}
+                where: {datastatus: process.env.AP_ACTIVE},
+                include:['USERS']
             })
             if(isDone) SendSuccessResponse(res, ok, recordFound, null, isDone);
             else sendErrorResponse(res,notFound,noRecordFound);

@@ -81,7 +81,8 @@ export default {
     view: async(req, res)=>{
         try {
             const viewAll = findAll({
-                where:{datastatus:process.env.AP_ACTIVE}
+                where:{datastatus:process.env.AP_ACTIVE},
+                include: ['TODO']
             })
             if(viewAll){
                 SendSuccessResponse(res, ok, recordFound, null, viewAll)
