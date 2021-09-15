@@ -13,8 +13,8 @@ import bcrypt from 'bcrypt';
 dotenv.config();
 const {created, ok} = successCodes;
 const {badRequest, internalServerError, unAuthorized, forbidden, notFound} = failureCodes;
-const {accountCreate, loginSuccess, recordFound} = successMessages;
-const {accountFailedToCreate, interError,loginFail, fieldValidation, noRecordFound} = errorMessages;
+const {accountCreate, loginSuccess, recordFound,updateSuccess} = successMessages;
+const {accountFailedToCreate, interError,loginFail, fieldValidation, noRecordFound, updateFail} = errorMessages;
 
 export default {
     register: async(req, res)=>{
@@ -95,7 +95,23 @@ export default {
         }
     },
     update: async(req, res)=>{
-
+        const id = req.params.id;
+        const {username, email, phone, datastatus} = req.body;
+        try {
+            const user = await db.User.findOne({
+                where: {id:id}
+            })
+            const isUpdated = await user.update({
+                username: username || user.username,
+                email: email || user.email,
+                phone: phone || user.phone,
+                datastatus: datastatus || user.datastatus
+            })
+            if(isUpdated) SendSuccessResponse(res, ok, updateSuccess, null, isUpdated);
+            else sendErrorResponse(res, badRequest, updateFail)
+        } catch (error) {
+            sendErrorResponse(res, internalServerError, interError)
+        }
     },
     viewById: async(req, res)=>{
 
