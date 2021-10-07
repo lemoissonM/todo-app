@@ -3,6 +3,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../bin/index';
 
+
 // style assertion
 chai.should();
 
@@ -18,6 +19,7 @@ describe('Todo Api', ()=>{
                 .end((err,res)=>{
                     res.should.have.status(200);
                     res.body.should.have.a('array');
+                    res.body.length.should.be.eq(3)
                     done();
                 })
         })
