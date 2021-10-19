@@ -5,11 +5,9 @@ import server from '../src/bin/index';
 
 // style assertion
 chai.should();
-
 chai.use(chaiHttp);
 
 describe('Todo Api', ()=>{
-    
     // Test route GET
     describe('GET-ROUTE api/todo/view-all', ()=>{
         it(' Récupération de l\'enregistrement avec succès !', (done)=>{
