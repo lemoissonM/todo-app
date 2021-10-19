@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node --exec babel-node ./src/bin/index.js",
     "dev": "nodemon --exec babel-node ./src/bin/index.js",
-    "test":"mocha"
+    "test":"mocha --watchAll"
   },
   "repository": {
     "type": "git",

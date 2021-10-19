@@ -1,8 +1,7 @@
 
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from '../bin/index';
-
+import server from '../src/bin/index';
 
 // style assertion
 chai.should();
