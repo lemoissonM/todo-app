@@ -1,6 +1,6 @@
-import express from 'express';
-import ctrl from '../../../app/controllers/user.controller';
-import validation from '../../validations/user.validations';
+const express = require( 'express');
+const ctrl = require( '../../../app/controllers/user.controller');
+const validation = require( '../../validations/user.validations');
 
 const route = express.Router()
 
@@ -11,4 +11,4 @@ route
     .put('update-user',validation.update, ctrl.update)
     .get('/getById', ctrl.viewById)
 
-export default route;
+module.exports= route;

@@ -1,8 +1,8 @@
-import joi from 'joi';
-import { errorMessages } from '../../app/helpers/message.helpers';
-import {failureCodes} from '../../app/helpers/statusCodes.helpers';
-import { sendErrorResponse, SendSuccessResponse } from '../../app/helpers/response.helpers';
-import db from '../../app/models';
+const joi = require('joi');
+const { errorMessages } = require('../../app/helpers/message.helpers');
+const {failureCodes} = require( '../../app/helpers/statusCodes.helpers');
+const { sendErrorResponse, SendSuccessResponse } = require( '../../app/helpers/response.helpers');
+const db = require( '../../app/models');
 const {badRequest, conflict} =  failureCodes;
 const {duplicatedTodo,fieldValidation} = errorMessages;
 const todoValidations ={
@@ -44,4 +44,4 @@ const todoValidations ={
     }
 }
 
-export default todoValidations;
+module.exports = todoValidations;

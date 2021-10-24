@@ -1,6 +1,6 @@
-import express from 'express';
-import ctrl from '../../../app/controllers/todo.controller';
-import validation from '../../../config/validations/todo.validations';
+const express = require( 'express');
+const ctrl = require( '../../../app/controllers/todo.controller');
+const validation = require( '../../../config/validations/todo.validations');
 
 const route = express.Router();
 
@@ -12,4 +12,4 @@ route
     .get('/view-by-id/:id', ctrl.viewById)
     .delete('/delete-todo/:id', ctrl.delete)
     .post('/search', ctrl.search)
-export default route;
+module.exports = route;
