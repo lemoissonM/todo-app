@@ -1,16 +1,16 @@
-import db from '../models';
-import dotenv from 'dotenv';
-import {Op} from 'sequelize';
-import { sendErrorResponse, SendSuccessResponse } from '../helpers/response.helpers';
-import { failureCodes, successCodes } from '../helpers/statusCodes.helpers';
-import { errorMessages, successMessages } from '../helpers/message.helpers';
+const db = require( '../models');
+const dotenv = require( 'dotenv');
+const {Op} = require( 'sequelize');
+const { sendErrorResponse, SendSuccessResponse } = require( '../helpers/response.helpers');
+const { failureCodes, successCodes } = require( '../helpers/statusCodes.helpers');
+const { errorMessages, successMessages } = require( '../helpers/message.helpers');
 dotenv.config();
-const {created, ok} = successCodes;
+const {created,ok} = successCodes;
 const {todoCreate,recordFound, updateSuccess, deleteRecordSuccess} = successMessages;
 const {badRequest, internalServerError, notFound} = failureCodes;
 const {todoCreateFail, interError, noRecordFound, updateFail, deleteRecordFail} = errorMessages;
 
-export default {
+module.exports = {
     register: async (req, res)=>{
         const {nom, dateTodo, complited, datastatus, userId} = req.body;
         console.log(req.body);
@@ -24,10 +24,10 @@ export default {
             })
             if(todoCreated){
                 SendSuccessResponse(res,created,todoCreate,null,todoCreated)
-            }else sendErrorResponse(res, badRequest, todoCreateFail)
+            }else sendErrorResponse(res,badRequest, todoCreateFail)
         } catch (error) {
             console.log(error)
-            sendErrorResponse(res, internalServerError, interError)
+            sendErrorResponse(res,internalServerError, interError)
         }
     },
     viewAll: async (req, res)=>{
@@ -36,10 +36,10 @@ export default {
                 where: {datastatus: process.env.AP_ACTIVE},
                 include:['USERS']
             })
-            if(isDone) SendSuccessResponse(res, ok, recordFound, null, isDone);
+            if(isDone) SendSuccessResponse(res,ok, recordFound, null, isDone);
             else sendErrorResponse(res,notFound,noRecordFound);
         } catch (error) {
-            sendErrorResponse(res, internalServerError, interError);
+            sendErrorResponse(res,internalServerError, interError);
         }
     },
     update: async (req, res)=>{
@@ -55,10 +55,10 @@ export default {
                 complited: complited || todo.complited,
                 datastatus: datastatus || todo.datastatus
             })
-            if(isUpdated) SendSuccessResponse(res, ok, updateSuccess, null, isUpdated);
-            else sendErrorResponse(res, badRequest, updateFail)
+            if(isUpdated) SendSuccessResponse(res,ok, updateSuccess, null, isUpdated);
+            else sendErrorResponse(res,badRequest, updateFail)
         } catch (error) {
-            sendErrorResponse(res, internalServerError, interError);
+            sendErrorResponse(res,internalServerError, interError);
         }
     },
     viewCompletedTodo: async (req, res)=>{
@@ -69,10 +69,10 @@ export default {
                 complited: process.env.AP_ACTIVE
             }
         })
-        if(isCompleted) SendSuccessResponse(res, ok, recordFound, null, isCompleted);
-        else sendErrorResponse(res, notFound, noRecordFound)
+        if(isCompleted) SendSuccessResponse(res,ok, recordFound, null, isCompleted);
+        else sendErrorResponse(res,notFound, noRecordFound)
       } catch (error) {
-        sendErrorResponse(res, internalServerError, interError)
+        sendErrorResponse(res,internalServerError, interError)
       }
     },
     viewById: async (req, res)=>{
@@ -82,10 +82,10 @@ export default {
             const isDone = await db.Todo.findOne({
                 where: {id:id}
             })
-            if(isDone) SendSuccessResponse(res, ok, recordFound, null, isDone);
-            else sendErrorResponse(res, notFound, noRecordFound);
+            if(isDone) SendSuccessResponse(res, successCodes.ok, recordFound, null, isDone);
+            else sendErrorResponse(res,notFound, noRecordFound);
         } catch (error) {
-            sendErrorResponse(res, internalServerError, interError);
+            sendErrorResponse(res,internalServerError, interError);
         }
     },
     delete: async (req, res)=>{

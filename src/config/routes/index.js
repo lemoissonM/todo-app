@@ -1,11 +1,11 @@
-import express from 'express';
-import todoRoutes from './api/todo.routes';
-import userRoutes from './api/user.routes';
+const express = require( 'express');
+const todoRoutes = require( './api/todo.routes');
+// const userRoutes = require( './api/user.routes');
 
 const routes = express.Router();
 
 routes
      .use('/todo', todoRoutes)
-     .use('/user', userRoutes)
+     // .use('/user', userRoutes)
 
-export default routes;
+module.exports = routes;

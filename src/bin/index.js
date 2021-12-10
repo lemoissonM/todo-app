@@ -1,10 +1,10 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import routes from '../config/routes';
-import { SendSuccessResponse } from '../app/helpers/response.helpers';
-import { successCodes } from '../app/helpers/statusCodes.helpers';
-import { successMessages } from '../app/helpers/message.helpers';
+const express =require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const routes = require ('../config/routes');
+const { SendSuccessResponse } = require ('../app/helpers/response.helpers');
+const { successCodes } = require ('../app/helpers/statusCodes.helpers');
+const { successMessages } = require ('../app/helpers/message.helpers');
 
 dotenv.config();
 const app = express();
